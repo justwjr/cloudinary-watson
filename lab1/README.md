@@ -24,7 +24,7 @@ In order to start you would need the following:
 
 Here comes the steps to create Content Assistant iOS app:
 
-1. Create an iOS application in Swift using the Bluemix Mobile Project (left menu - look for Mobile - choose Chatbot Project)
+1. [Create an iOS application in Swift using the Bluemix Mobile Project (left menu - look for Mobile - choose Chatbot Project)](https://console.bluemix.net/developer/create-project/?pattern=MOBILE&starter=Watson%20Conversation)
 2. Add the Watson SDK: [Watson-Developer-Cloud SDK for Swift](https://github.com/watson-developer-cloud/swift-sdk#installation)
 3. Instantiate the Bluemix Watson services and get the keys/a token to them
 4. Add some code in your iOS app to invoke the cognitive services
@@ -32,7 +32,46 @@ Here comes the steps to create Content Assistant iOS app:
 
 Alternatively you could use TJ Bot Raspberry Pi robot (you would need a mic, a speaker without the XCode and iOS IDE). Look here for inspiration on how to achieve that with JeanCarl Bisson's' [node-red labs](https://github.com/jeancarl/node-red-labs)
 
-The code looks like this:
+Please update BMSCredentials.plist
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>conversationWorkspaceID</key>
+	<string></string>
+	<key>sttUsername</key>
+	<string></string>
+	<key>sttPassword</key>
+	<string></string>
+	<key>ttsPassword</key>
+	<string></string>
+	<key>ttsUsername</key>
+	<string></string>
+	<key>conversationUsername</key>
+	<string></string>
+	<key>conversationPassword</key>
+	<string></string>
+	<key>conversationUrl</key>
+	<string>https://gateway.watsonplatform.net/conversation/api</string>
+	<key>appName</key>
+	<string>name of your app</string>
+</dict>
+</plist>
+```
+
+In order to run the application the ```info.plist``` needs to have: 
+```xml
+<key>NSCameraUsageDescription</key>
+<string>This application uses the camera to allow Watson to analyze photos using Visual Recognition</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This application uses photos in the Photo Library to allow Watson to analyze them using Visual Recognition</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>This application uses the microphone to allow for the Watson speech to text commands</string>
+```
+
+
+The entire code of the ```ViewController.swift``` looks like this:
 ```swift
 import UIKit
 import SwiftSpinner
@@ -428,16 +467,7 @@ class ViewController: JSQMessagesViewController {
                         let attachment = Attachment(fallback: "Hello World", title: "Welcome to SlackKit", callbackID: "hello_world", actions: [helloAction])
                         bot.webAPI?.sendMessage(channel: "C6VHKLV8C", text: slackText, attachments: [], success: nil, failure: nil)
                         
-                        self.didPressSend(nil, withMessageText: "I got pictures from 1 to " + endIndex, senderId: "watson", senderDisplayName: "watson", date: Date())
-                        
-                         //let message = JSQMessage(senderId: self.senderId, displayName: self.senderDisplayName, text: "I got pictures from 1 to " + endIndex) //watsonMessage)
-                         
-                         // Add message to conversation message array
-                         //self.conversationMessages.append(message!)
-                           // DispatchQueue.main.async {
-                             //   self.finishSendingMessage()
-                         //}
-                        
+                        self.didPressSend(nil, withMessageText: "I got pictures from 1 to " + endIndex, senderId: "watson", senderDisplayName: "watson", date: Date())     
                     }
                     
                     
